@@ -6,21 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     */
     protected $fillable = [
         'title',
         'description',
         'status',
-        'user_id',   // 👈 important: ties task to a specific user
+        'admin_id', // track which admin created the task
     ];
 
     /**
-     * Relationship: each task belongs to one user.
+     * Many-to-many relationship: employees assigned to this task
      */
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class, 'task_user');
+    }
+
+    /**
+     * Each task belongs to one admin (creator)
+     */
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

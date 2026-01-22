@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // 👈 links task to user
+            $table->foreignId('admin_id')->constrained('users')->onDelete('cascade'); // 👈 admin who created
             $table->timestamps();
         });
     }

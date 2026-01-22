@@ -4,15 +4,12 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens; // if you plan to use token-based auth
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     */
     protected $fillable = [
         'name',
         'role',
@@ -20,21 +17,24 @@ class User extends Authenticatable
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays / JSON.
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
     /**
-     * Relationship: a user can have many tasks.
+     * Many-to-many: tasks assigned to this employee
      */
     public function tasks()
     {
-        return $this->hasMany(Task::class);
-        // If you really want many-to-many, keep belongsToMany(Task::class)
-        // but usually it's hasMany for "user owns tasks"
+        return $this->belongsToMany(Task::class, 'task_user');
+    }
+
+    /**
+     * One-to-many: tasks created by this admin
+     */
+    public function createdTasks()
+    {
+        return $this->hasMany(Task::class, 'admin_id');
     }
 }

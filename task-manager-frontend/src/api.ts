@@ -17,9 +17,10 @@ export const createTask = (data: {
   description: string;
   status: string;
   user_ids: number[];
+  admin_id: number;
 }) => API.post("/tasks", data);
 
-export const getMyTasks = (userId: number) => API.get(`/my-tasks/${userId}`);
+export const getMyTasks = (userId: number) => API.get(`/users/${userId}/tasks`);
 
 export const updateTaskStatus = (id: number, status: string) =>
   API.patch(`/tasks/${id}/status`, { status });

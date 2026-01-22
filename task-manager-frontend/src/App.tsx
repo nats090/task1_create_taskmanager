@@ -1,28 +1,39 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
-import RegisterForm from "./components/RegisterForm";
+import AdminDashboard from "./pages/AdminDashboard";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
+import RegisterForm from "./components/RegisterForm"; // 👈 correct path
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+}
 
 function App() {
-  const [user, setUser] = useState<any>(null);
-  const [showRegister, setShowRegister] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   return (
-    <div>
-      {!user ? (
-        <>
-          {showRegister ? (
-            <RegisterForm onRegister={() => setShowRegister(false)} />
-          ) : (
-            <LoginForm onLogin={setUser} />
-          )}
-          <button onClick={() => setShowRegister(!showRegister)}>
-            {showRegister ? "Back to Login" : "Create Account"}
-          </button>
-        </>
-      ) : (
-        <h2>Welcome, {user.name} ({user.role})</h2>
-      )}
-    </div>
+    <Router>
+      <Routes>
+        {/* Login route */}
+        <Route
+          path="/"
+          element={
+            !user ? <LoginForm onLogin={setUser} /> : <Navigate to={`/${user.role}`} />
+          }
+        />
+
+        {/* Register route */}
+        <Route path="/register" element={<RegisterForm />} />
+
+        {/* Dashboards */}
+        <Route path="/admin" element={<AdminDashboard user={user} />} />
+        <Route path="/employee" element={<EmployeeDashboard user={user} />} />
+      </Routes>
+    </Router>
   );
 }
 
