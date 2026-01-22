@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 import LoginForm from "./components/LoginForm";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-}
+import RegisterForm from "./components/RegisterForm";
 
 function App() {
-  const [user, setUser] = useState<User | null>(null); // ✅ Type added
+  const [user, setUser] = useState<any>(null);
+  const [showRegister, setShowRegister] = useState(false);
 
   return (
     <div>
       {!user ? (
-        <LoginForm onLogin={setUser} />
+        <>
+          {showRegister ? (
+            <RegisterForm onRegister={() => setShowRegister(false)} />
+          ) : (
+            <LoginForm onLogin={setUser} />
+          )}
+          <button onClick={() => setShowRegister(!showRegister)}>
+            {showRegister ? "Back to Login" : "Create Account"}
+          </button>
+        </>
       ) : (
         <h2>Welcome, {user.name} ({user.role})</h2>
       )}

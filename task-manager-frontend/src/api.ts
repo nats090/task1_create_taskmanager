@@ -23,3 +23,11 @@ export const getMyTasks = (userId: number) => API.get(`/my-tasks/${userId}`);
 
 export const updateTaskStatus = (id: number, status: string) =>
   API.patch(`/tasks/${id}/status`, { status });
+
+export const register = (data: {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}) => API.post("/register", data);
+

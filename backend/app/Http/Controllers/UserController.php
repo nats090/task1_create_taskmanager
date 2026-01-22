@@ -50,4 +50,31 @@ class UserController extends Controller
     {
         return response()->json(['message' => 'Logout successful']);
     }
+
+    // Register new user
+
+    public function register(Request $request)
+    {
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+        'role' => 'required|string' // e.g. "employee" or "admin"
+    ]);
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password), // ✅ hash password
+        'role' => $request->role,
+    ]);
+
+    $user->makeHidden(['password', 'remember_token']);
+
+    return response()->json([
+        'message' => 'User registered successfully',
+        'user' => $user
+    ], 201);
+    }
+
 }

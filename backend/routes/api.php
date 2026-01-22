@@ -9,6 +9,7 @@ Route::get('/users', [UserController::class, 'index']); // List all employees
 Route::get('/users/{id}/tasks', [UserController::class, 'tasks']); // Get tasks for a user
 Route::post('/login', [UserController::class, 'login']); // Login
 Route::post('/logout', [UserController::class, 'logout']); // Logout
+Route::post('/register', [UserController::class, 'register']);
 
 // ✅ Task routes
 Route::get('/tasks', [TaskController::class, 'index']); // List all tasks
