@@ -72,6 +72,10 @@ class UserController extends Controller
     public function tasks($id)
     {
         $user = User::findOrFail($id);
-        return response()->json($user->tasks);
+
+        // ✅ eager load the admin who created each task
+        return response()->json(
+            $user->tasks()->with('admin')->get()
+        );
     }
 }

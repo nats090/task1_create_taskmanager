@@ -17,7 +17,12 @@ export default function EmployeeDashboard({ user }: { user: any }) {
       <ul>
         {tasks.map(task => (
           <li key={task.id}>
-            {task.title} - {task.status}
+            {task.title} — {task.status}
+            {task.admin && (
+              <span style={{ marginLeft: "10px", fontStyle: "italic" }}>
+                (Created by {task.admin.name})
+              </span>
+            )}
           </li>
         ))}
       </ul>

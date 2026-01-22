@@ -5,25 +5,14 @@ const API = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
+// Auth
 export const login = (data: { email: string; password: string }) =>
   API.post("/login", data);
 
 export const logout = () => API.post("/logout");
 
+// Users
 export const getUsers = () => API.get("/users");
-
-export const createTask = (data: {
-  title: string;
-  description: string;
-  status: string;
-  user_ids: number[];
-  admin_id: number;
-}) => API.post("/tasks", data);
-
-export const getMyTasks = (userId: number) => API.get(`/users/${userId}/tasks`);
-
-export const updateTaskStatus = (id: number, status: string) =>
-  API.patch(`/tasks/${id}/status`, { status });
 
 export const register = (data: {
   name: string;
@@ -32,3 +21,21 @@ export const register = (data: {
   role: string;
 }) => API.post("/register", data);
 
+// Tasks
+export const createTask = (data: {
+  title: string;
+  description: string;
+  status: string;
+  user_ids?: number[];   // ✅ make optional
+  admin_id: number;
+}) => API.post("/tasks", data);
+
+export const getTasks = () => API.get("/tasks"); // ✅ added
+
+export const updateTask = (id: number, data: { user_ids: number[] }) =>
+  API.put(`/tasks/${id}`, data); // ✅ added
+
+export const getMyTasks = (userId: number) => API.get(`/users/${userId}/tasks`);
+
+export const updateTaskStatus = (id: number, status: string) =>
+  API.patch(`/tasks/${id}/status`, { status });
